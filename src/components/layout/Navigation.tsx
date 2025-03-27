@@ -6,7 +6,6 @@ import { useState } from "react";
 
 const Navigation = () => {
   const pathname = usePathname();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navigation = [
     { name: "Home", href: "/" },
