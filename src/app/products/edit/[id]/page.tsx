@@ -54,7 +54,7 @@ export default function EditProductPage() {
     productService.updateProduct(productId, data)
   );
 
-  //uedirect after successful update
+  //redirect after successful update, when isSuccess is true
   useEffect(() => {
     if (isSuccess) {
       router.push(`/products/${productId}`);
@@ -62,12 +62,17 @@ export default function EditProductPage() {
   }, [isSuccess, router, productId]);
 
   //handle input changes
+  //responsible for handling the form state when the user types in the input fields
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    //this uses obkect destructuring to extract the name and value of the input field
     const { name, value } = e.target;
 
     //convert numeric values
+    //if the name of the form fieldis "price" or "quantity", convert the value to a number, if not, set the value as is
+    //if name is "price", then [name] becomes the property name "price"
+    //if name is "quantity", then [name] becomes the property name "quantity"
     if (name === "price") {
       setFormData({ ...formData, [name]: parseFloat(value) || 0 });
     } else if (name === "quantity") {
@@ -76,6 +81,9 @@ export default function EditProductPage() {
       setFormData({ ...formData, [name]: value });
     }
   };
+
+  //spread operator ..formDataa is used to keep all the xisting values that arent being changed
+  //only updte the one field the user modified
 
   //handle form submission
   const handleSubmit = async (e: React.FormEvent) => {

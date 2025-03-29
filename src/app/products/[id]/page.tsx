@@ -8,8 +8,11 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
 export default function ProductDetailPage() {
+  //gets url parameters
   const params = useParams();
+  //router for navigating between pages
   const router = useRouter();
+  //extracts and converts the product id from the url paramater to a number
   const productId = Number(params.id);
 
   //fetch product details
@@ -17,12 +20,13 @@ export default function ProductDetailPage() {
     data: product,
     isLoading,
     error,
+    //useFetch hook will automatically refetch the data when the productId changes
   } = useFetch<Product>(
     () => productService.getProductById(productId),
     [productId]
   );
 
-  //format price
+  //format price helper function
   const formatPrice = (price: number | undefined) => {
     if (price === undefined) return "$0.00";
     return new Intl.NumberFormat("en-US", {
@@ -37,6 +41,7 @@ export default function ProductDetailPage() {
     return new Date(dateString).toLocaleDateString();
   };
 
+  //if data is loading, show spinner
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-12">
@@ -45,6 +50,7 @@ export default function ProductDetailPage() {
     );
   }
 
+  //if there is an error, show error message and button with link to products page
   if (error) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-4">
@@ -61,6 +67,7 @@ export default function ProductDetailPage() {
     );
   }
 
+  //if product is not found, show error message and link to products page
   if (!product) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-4">
@@ -95,16 +102,6 @@ export default function ProductDetailPage() {
       </div>
 
       <div className="bg-white dark:bg-gray-800 shadow overflow-hidden rounded-lg">
-        {product.imageUrl && (
-          <div className="w-full p-4 bg-gray-50 dark:bg-gray-900 flex justify-center">
-            <img
-              src={product.imageUrl}
-              alt={product.name}
-              className="max-h-64 object-contain"
-            />
-          </div>
-        )}
-
         <div className="p-4">
           <div className="flex justify-between mb-4">
             <span className="text-2xl font-bold">
