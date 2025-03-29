@@ -95,7 +95,7 @@ export function useMutation<T, P>(mutationFn: (params: P) => Promise<any>) {
       try {
         //call the provided mutation function (ex. createProduct) with the parameters
         const response = await mutationFn(params);
-        //wen successful, update state with the response data and success indicators
+        //when successful, update state with the response data and success indicators
         setState({
           data: response.data, //store the returned data (e.g., created product)
           isLoading: false, 

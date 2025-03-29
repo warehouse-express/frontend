@@ -50,7 +50,6 @@ export interface ProductDto {
   description?: string;
   price: number;
   quantity: number;
-  imageUrl?: string;
   category?: string;
   sellerId: number;
 }
@@ -60,7 +59,6 @@ export interface ProductUpdateDto {
   description?: string;
   price: number;
   quantity: number;
-  imageUrl?: string;
   category?: string;
 }
 
