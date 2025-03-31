@@ -37,13 +37,13 @@ export interface SellerDto {
 export interface SellerUpdateDto {
   firstName: string;
   lastName: string;
+  email: string;
   companyName: string;
   companyDescription?: string;
   contactPhone?: string;
   businessAddress?: string;
   taxId?: string;
 }
-
 
 export interface ProductDto {
   name: string;

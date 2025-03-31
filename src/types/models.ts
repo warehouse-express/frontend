@@ -1,4 +1,3 @@
-
 export interface User {
   id: number;
   firstName: string;
@@ -24,7 +23,6 @@ export interface Seller extends User {
   taxId: string;
 }
 
-
 export interface Product {
   id: number;
   name: string;
@@ -38,7 +36,6 @@ export interface Product {
   createdAt: string;
   updatedAt: string;
 }
-
 
 export interface OrderItem {
   id: number;
