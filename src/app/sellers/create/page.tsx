@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { SellerDto } from "@/types/api";
 
-export default function SellerDetailPage() {
+export default function SellerCreatePage() {
     const router = useRouter();
     const [formData, setFormData] = useState<SellerDto>({
         firstName: "",

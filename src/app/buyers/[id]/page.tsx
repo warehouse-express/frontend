@@ -2,31 +2,31 @@
 
 import React, { useState, useEffect } from "react";
 import { useFetch } from "@/hooks/useApi";
-import { sellerService, productService } from "@/services/api";
-import { Seller, Product } from "@/types/models";
+import { buyerService, orderService } from "@/services/api";
+import { Buyer, Order } from "@/types/models";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
-export default function SellerDetailPage() {
+export default function BuyerDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const sellerId = Number(params.id);
+  const buyerId = Number(params.id);
 
-  //fetch seller details
+  //fetch buyer details
   const {
-    data: seller,
+    data: buyer,
     isLoading,
     error,
-  } = useFetch<Seller>(() => sellerService.getSellerById(sellerId), [sellerId]);
+  } = useFetch<Buyer>(() => buyerService.getBuyerById(buyerId), [buyerId]);
 
-  //fetch products for selllers directly
+  //fetch orders for buyer directly 
   const {
-    data: products,
-    isLoading: isLoadingProducts,
-    error: productsError,
-  } = useFetch<Product[]>(
-    () => productService.getProductsBySeller(sellerId),
-    [sellerId]
+    data: orders,
+    isLoading: isLoadingOrders,
+    error: ordersError,
+  } = useFetch<Order[]>(
+    () => orderService.getOrdersByBuyer(buyerId),
+    [buyerId]
   );
 
   //format date
@@ -44,7 +44,7 @@ export default function SellerDetailPage() {
     );
   }
 
-  //if there is an error, show error message and button with link to sellers page
+  //if there is an error, show error message and button with link to buyers page
   if (error) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-4">
@@ -52,24 +52,24 @@ export default function SellerDetailPage() {
           <p>{error.message}</p>
         </div>
         <button
-          onClick={() => router.push("/sellers")}
+          onClick={() => router.push("/buyers")}
           className="text-blue-600 hover:underline"
         >
-          Back to sellers
+          Back to buyers
         </button>
       </div>
     );
   }
 
-  //if seller is not found, show error message and link to sellers page
-  if (!seller) {
+  //if buyer is not found, show error message and link to buyers page
+  if (!buyer) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-4">
         <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
-          <p>seller not found</p>
+          <p>buyer not found</p>
         </div>
-        <Link href="/sellers" className="text-blue-600 hover:underline">
-          Back to sellers
+        <Link href="/buyers" className="text-blue-600 hover:underline">
+          Back to buyers
         </Link>
       </div>
     );
@@ -78,16 +78,16 @@ export default function SellerDetailPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-xl font-semibold">{seller.companyName}</h1>
+        <h1 className="text-xl font-semibold">{buyer.firstName}</h1>
         <div className="flex space-x-2">
           <Link
-            href="/sellers"
+            href="/buyers"
             className="text-gray-600 hover:text-gray-900 text-sm"
           >
             Back
           </Link>
           <Link
-            href={`/sellers/edit/${seller.id}`}
+            href={`/buyers/edit/${buyer.id}`}
             className="text-blue-600 hover:text-blue-800 text-sm"
           >
             Edit
@@ -99,51 +99,44 @@ export default function SellerDetailPage() {
         <div className="p-4">
           <div className="flex justify-between mb-4"></div>
 
-          <div className="mb-4">
-            <h3 className="text-sm text-gray-500 mb-1">Description</h3>
-            <p className="text-gray-800 dark:text-gray-200">
-              {seller.companyDescription || "No description provided"}
-            </p>
-          </div>
-
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <h3 className="text-sm text-gray-500 mb-1">Contact Phone</h3>
+              <h3 className="text-sm text-gray-500 mb-1">Buyer ID</h3>
               <p className="text-gray-800 dark:text-gray-200">
-                {seller.contactPhone || "No phone number"}
+                {buyer.id|| "No Buyer ID"}
               </p>
             </div>
 
             <div>
-              <h3 className="text-sm text-gray-500 mb-1">Business Address</h3>
+              <h3 className="text-sm text-gray-500 mb-1">Phone Number</h3>
               <p className="text-gray-800 dark:text-gray-200">
-                {seller.businessAddress || "No address"}
+                {buyer.phoneNumber || "No phone number"}
               </p>
             </div>
 
             <div>
-              <h3 className="text-sm text-gray-500 mb-1">Tax ID</h3>
+              <h3 className="text-sm text-gray-500 mb-1">Shipping Address</h3>
               <p className="text-gray-800 dark:text-gray-200">
-                {seller.taxId || "No tax ID"}
+                {buyer.shippingAddress || "No Shipping Address"}
               </p>
             </div>
 
             <div>
               <h3 className="text-sm text-gray-500 mb-1">Email</h3>
-              <p className="text-gray-800 dark:text-gray-200">{seller.email}</p>
+              <p className="text-gray-800 dark:text-gray-200">{buyer.email}</p>
             </div>
 
             <div>
               <h3 className="text-sm text-gray-500 mb-1">First Name</h3>
               <p className="text-gray-800 dark:text-gray-200">
-                {seller.firstName}
+                {buyer.firstName}
               </p>
             </div>
 
             <div>
               <h3 className="text-sm text-gray-500 mb-1">Last Name</h3>
               <p className="text-gray-800 dark:text-gray-200">
-                {seller.lastName}
+                {buyer.lastName}
               </p>
             </div>
           </div>
@@ -152,55 +145,55 @@ export default function SellerDetailPage() {
             <div>
               <h3 className="text-sm text-gray-500 mb-1">Created</h3>
               <p className="text-gray-800 dark:text-gray-200">
-                {formatDate(seller.createdAt)}
+                {formatDate(buyer.createdAt)}
               </p>
             </div>
 
             <div>
               <h3 className="text-sm text-gray-500 mb-1">Last Updated</h3>
               <p className="text-gray-800 dark:text-gray-200">
-                {formatDate(seller.updatedAt)}
+                {formatDate(buyer.updatedAt)}
               </p>
             </div>
           </div>
 
           <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-            <h3 className="text-sm text-gray-500 mb-1">Products</h3>
-            {isLoadingProducts ? (
+            <h3 className="text-sm text-gray-500 mb-1">Orders</h3>
+            {isLoadingOrders ? (
               <p className="text-gray-600 dark:text-gray-400">
-                Loading products...
+                Loading orders...
               </p>
-            ) : productsError ? (
+            ) : ordersError ? (
               <p className="text-red-600 dark:text-red-400">
-                Error loading products
+                Error loading orders
               </p>
-            ) : products && products.length > 0 ? (
+            ) : orders && orders.length > 0 ? (
               <div className="mt-2">
                 {/* Dropdown for selecting a product */}
                 <select
                   className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800"
                   onChange={(e) => {
                     if (e.target.value) {
-                      router.push(`/products/${e.target.value}`);
+                      router.push(`/orders/${e.target.value}`);
                     }
                   }}
                   defaultValue=""
                 >
                   {/* Once user selects a product, redirect to that product page */}
                   <option value="" disabled>
-                    Select a product to view
+                    Select a order to view
                   </option>
-                  {products.map((product) => (
-                    <option key={product.id} value={product.id}>
-                      {product.name} - ${product.price.toFixed(2)} (
-                      {product.status})
+                  {orders.map((order) => (
+                    <option key={order.id} value={order.id}>
+                      {order.orderNumber} - ${order.totalAmount} ({order.status}
+                      )
                     </option>
                   ))}
                 </select>
               </div>
             ) : (
               <p className="text-gray-600 dark:text-gray-400">
-                No products listed by this seller
+                No orders listed by this buyer
               </p>
             )}
           </div>
