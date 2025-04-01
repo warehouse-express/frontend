@@ -2,41 +2,41 @@
 
 import React, { useState } from "react";
 import { useFetch, useMutation } from "@/hooks/useApi";
-import { buyerService } from "@/services/api";
-import { Buyer } from "@/types/models";
+import { orderService } from "@/services/api";
+import { Order } from "@/types/models";
 import Link from "next/link";
 
-export default function BuyersPage() {
-  //state to trigger data refetching (incremented when we need to refresh the buyer list)
+export default function OrdersPage() {
+  //state to trigger data refetching (incremented when we need to refresh the order list)
   //the increment is used to force the useFetch hook to re-fetch the data
   const [reloadTrigger, setReloadTrigger] = useState(0);
 
-  //fetch all buyers from the API using custom hook
+  //fetch all orders from the API using custom hook
   //will re-fetch whenever reloadTrigger changes
   const {
-    data: buyers,
+    data: orders,
     isLoading,
     error,
-  } = useFetch<Buyer[]>(() => buyerService.getAllBuyers(), [reloadTrigger]);
+  } = useFetch<Order[]>(() => orderService.getAllOrders(), [reloadTrigger]);
 
-  //setup mutation hook for deleting buyers
-  //takes a buyer ID (number) and returns void
-  const deletebuyerMutation = useMutation<void, number>((id) =>
-    buyerService.deleteBuyer(id)
+  //setup mutation hook for deleting orders
+  //takes a order ID (number) and returns void
+  const deleteOrderMutation = useMutation<void, number>((id) =>
+    orderService.cancelOrder(id)
   );
 
-  //handler function for deleting a buyer
-  const handleDeletebuyer = async (id: number) => {
+  //handler function for deleting a order
+  const handleDeleteOrder = async (id: number) => {
     //show confirmation dialog before deletion
-    if (window.confirm("Are you sure you want to delete this buyer?")) {
+    if (window.confirm("Are you sure you want to delete this order?")) {
       try {
         //call the delete API via the mutation hook
-        await deletebuyerMutation.mutate(id);
-        //increment the reload trigger to refresh the buyer list
+        await deleteOrderMutation.mutate(id);
+        //increment the reload trigger to refresh the order list
         setReloadTrigger((prev) => prev + 1);
       } catch (error) {
         //log errors to console for debugging
-        console.error("Failed to delete buyer:", error);
+        console.error("Failed to delete order:", error);
       }
     }
   };
@@ -53,12 +53,12 @@ export default function BuyersPage() {
     <div className="container">
       {/*header section with title and add button */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-xl font-semibold">Buyers</h1>
+        <h1 className="text-xl font-semibold">Orders</h1>
         <Link
-          href="/buyers/create"
+          href="/orders/create"
           className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm"
         >
-          Add Buyer
+          Add Order
         </Link>
       </div>
 
@@ -76,67 +76,67 @@ export default function BuyersPage() {
         </div>
       )}
 
-      {/* empty state - shows message when no buyers exist */}
-      {!isLoading && !error && buyers?.length === 0 && (
+      {/* empty state - shows message when no orders exist */}
+      {!isLoading && !error && orders?.length === 0 && (
         <div className="text-center py-8 bg-gray-50 dark:bg-gray-800 rounded">
-          <p className="text-gray-500 dark:text-gray-400">No buyers found.</p>
+          <p className="text-gray-500 dark:text-gray-400">No orders found.</p>
           <Link
-            href="/sllers/create"
+            href="/orders/create"
             className="text-blue-600 hover:underline text-sm mt-2 inline-block"
           >
-            Add your first buyer
+            Add your first order
           </Link>
         </div>
       )}
 
-      {/* buyers grid - displays when buyers exist */}
+      {/* orders grid - displays when orders exist */}
       {!isLoading &&
         !error &&
-        buyers &&
-        buyers.length &&
-        Array.isArray(buyers) && (
+        orders &&
+        orders.length &&
+        Array.isArray(orders) && (
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {/* map through each buyer to create buyer cards */}
-            {buyers.map((buyer) => (
+            {/* map through each order to create order cards */}
+            {orders.map((order) => (
               <div
-                key={buyer.id} //react requires a unique key for list items
+                key={order.id} //react requires a unique key for list items
                 className="bg-white dark:bg-gray-800 rounded shadow p-4 flex flex-col"
               >
-                {/* buyer header with name and status badge */}
+                {/* Order header with order number and status badge */}
                 <div className="flex justify-between items-start mb-2">
                   <h2 className="font-medium text-lg truncate">
-                    {buyer.firstName}
+                    {order.orderNumber}
                   </h2>
                 </div>
 
-                {/* buyer phone number */}
+                {/* Order Status */}
                 <div className="text-sm text-gray-500 mb-1">
-                  {buyer.phoneNumber || "No phone number"}
+                  {order.status|| "No order status"}
                 </div>
 
-                {/* Buyer address */}
+                {/* Buyer Name */}
                 <div className="flex justify-between mb-3">
                   <div className="font-semibold">
-                    {buyer.shippingAddress || "No address"}
+                    {order.buyer.firstName + " " + order.buyer.lastName || "No Buyer Name"}
                   </div>
                 </div>
 
                 {/* action buttons */}
                 <div className="flex justify-end space-x-2 mt-auto">
                   <Link
-                    href={`/buyers/${buyer.id}`}
+                    href={`/orders/${order.id}`}
                     className="text-blue-600 hover:text-blue-800 text-sm"
                   >
                     View
                   </Link>
                   <Link
-                    href={`/buyers/edit/${buyer.id}`}
+                    href={`/orders/edit/${order.id}`}
                     className="text-indigo-600 hover:text-indigo-800 text-sm"
                   >
                     Edit
                   </Link>
                   <button
-                    onClick={() => handleDeletebuyer(buyer.id)}
+                    onClick={() => handleDeleteOrder(order.id)}
                     className="text-red-600 hover:text-red-800 text-sm"
                   >
                     Delete
