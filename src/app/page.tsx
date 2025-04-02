@@ -132,9 +132,40 @@ export default function Home() {
       {/* Footer */}
       <section className="py-12 px-4 border-t border-gray-200 dark:border-gray-700 text-center">
         <p className="text-sm text-gray-500 dark:text-gray-400 font-light">
-          Group number: 
+          Group number: 16
         </p>
       </section>
+      <div className="flex flex-wrap justify-center gap-4">
+        {[
+          { name: "Kyan", url: "https://www.linkedin.com/in/kyan-nassouti/" },
+          { name: "Eren", url: "https://www.linkedin.com/in/eren-solak-b520011b3/" },
+          { name: "Oguzhan", url: "https://www.linkedin.com/in/oguzhancakir2000/" },
+          { name: "Boran", url: "https://www.linkedin.com/in/boran-dal/" },
+          { name: "William", url: "https://www.linkedin.com/in/williu10/" },
+          { name: "Jad", url: "https://www.linkedin.com/in/jadhaidar-/" },
+          { name: "Michael", url: "https://www.linkedin.com/in/michael-abouzeid-774-774774774-695a82194/" },
+        ].map((member) => (
+          <a
+            key={member.name}
+            href={member.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center space-x-1 text-sm text-blue-600 hover:underline"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              className="text-blue-600"
+            >
+              <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.1c.53-1 1.83-2.2 3.8-2.2 4.06 0 4.81 2.67 4.81 6.14V24h-4v-8.1c0-1.93-.03-4.41-2.69-4.41-2.7 0-3.11 2.1-3.11 4.27V24h-4V8z" />
+            </svg>
+            <span>{member.name}</span>
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
