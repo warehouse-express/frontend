@@ -26,7 +26,7 @@ const Navigation = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="font-bold text-xl">
-              WES
+              WMS
             </Link>
           </div>
 

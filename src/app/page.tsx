@@ -9,19 +9,18 @@ export default function Home() {
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          width="20"
+          height="20"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          <path d="M21 7 H3 V3 H21 Z" />
-          <path d="M21 11 H3 V7 H21 Z" />
-          <path d="M21 15 H3 V11 H21 Z" />
-          <path d="M21 19 H3 V15 H21 Z" />
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <path d="M3 9h18" />
+          <path d="M9 21V9" />
         </svg>
       ),
     },
@@ -32,12 +31,12 @@ export default function Home() {
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          width="20"
+          height="20"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -53,12 +52,12 @@ export default function Home() {
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          width="20"
+          height="20"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -76,94 +75,65 @@ export default function Home() {
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          width="20"
+          height="20"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          <path d="M9 17H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-          <path d="M19 17h-8V3h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2z"></path>
+          <rect x="2" y="3" width="20" height="14" rx="2" />
+          <line x1="8" y1="21" x2="16" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
         </svg>
       ),
     },
   ];
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <section className="py-12">
-        <h1 className="text-3xl font-bold mb-6 text-center">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
+      {/* Hero section with centered title */}
+      <section className="mt-[-4vh] h-[85vh] flex flex-col items-center justify-center px-4">
+        <h1 className="text-4xl md:text-5xl font-normal text-center mb-6 text-gray-900 dark:text-gray-100">
           Warehouse Management System
         </h1>
-        <p className="text-lg text-center text-gray-600 dark:text-gray-400 mb-12">
-          A marketplace platform for buyers and sellers to connect and transact
+        <div className="w-16 h-1 bg-gray-900 dark:bg-gray-100 mb-8"></div>
+        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-md mx-auto mb-16 text-center font-light">
+          A platform for inventory management
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {sections.map((section) => (
-            <Link
-              key={section.title}
-              href={section.link}
-              className="block p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition-colors"
-            >
-              <div className="flex items-center mb-4">
-                <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg mr-4">
-                  {section.icon}
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {sections.map((section) => (
+              <Link
+                key={section.title}
+                href={section.link}
+                className="block h-full"
+              >
+                <div className="h-full flex flex-col p-6 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-gray-900 dark:hover:border-gray-300 transition-colors">
+                  <div className="text-gray-900 dark:text-gray-100 mb-6">
+                    {section.icon}
+                  </div>
+                  <h3 className="text-lg font-normal mb-2 text-gray-900 dark:text-gray-100">
+                    {section.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 font-light">
+                    {section.description}
+                  </p>
                 </div>
-                <h2 className="text-xl font-semibold">{section.title}</h2>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400">
-                {section.description}
-              </p>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="py-12">
-        <h2 className="text-2xl font-semibold mb-6">System Overview</h2>
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-          <p className="mb-4">
-            The Warehouse Management System is a full-featured platform that
-            enables:
-          </p>
-          <ul className="list-disc pl-5 space-y-2 mb-4">
-            <li>Sellers to list and manage their products</li>
-            <li>Buyers to browse products and place orders</li>
-            <li>Tracking order status from placement to delivery</li>
-            <li>Managing inventory levels and stock status</li>
-          </ul>
-          <p className="mb-6">
-            Explore the different sections to see all available features and
-            functionality.
-          </p>
-
-          <div className="flex justify-center">
-            <Link
-              href="/api-test"
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-              Test API Connection
-            </Link>
-          </div>
-        </div>
+      {/* Footer */}
+      <section className="py-12 px-4 border-t border-gray-200 dark:border-gray-700 text-center">
+        <p className="text-sm text-gray-500 dark:text-gray-400 font-light">
+          Group number: 
+        </p>
       </section>
     </div>
   );
