@@ -25,10 +25,18 @@ export default function OrdersPage() {
     orderService.cancelOrder(id)
   );
 
-  //handler function for deleting a order
-  const handleDeleteOrder = async (id: number) => {
-    //show confirmation dialog before deletion
-    if (window.confirm("Are you sure you want to delete this order?")) {
+  const handleDeleteOrder = async (id: number, status: string) => {
+    //check if the order is in DELIVERED or SHIPPED status
+    if (status === "DELIVERED" || status === "SHIPPED") {
+      //show an error message
+      alert(
+        `Cannot cancel this order. Orders with status "${status}" cannot be canceled.`
+      );
+      return;
+    }
+
+    //if status check passes, proceed with the confirmation dialog
+    if (window.confirm("Are you sure you want to cancel this order?")) {
       try {
         //call the delete API via the mutation hook
         await deleteOrderMutation.mutate(id);
@@ -111,13 +119,14 @@ export default function OrdersPage() {
 
                 {/* Order Status */}
                 <div className="text-sm text-gray-500 mb-1">
-                  {order.status|| "No order status"}
+                  {order.status || "No order status"}
                 </div>
 
                 {/* Buyer Name */}
                 <div className="flex justify-between mb-3">
                   <div className="font-semibold">
-                    {order.buyer.firstName + " " + order.buyer.lastName || "No Buyer Name"}
+                    {order.buyer.firstName + " " + order.buyer.lastName ||
+                      "No Buyer Name"}
                   </div>
                 </div>
 
@@ -136,7 +145,7 @@ export default function OrdersPage() {
                     Edit
                   </Link>
                   <button
-                    onClick={() => handleDeleteOrder(order.id)}
+                    onClick={() => handleDeleteOrder(order.id, order.status)}
                     className="text-red-600 hover:text-red-800 text-sm"
                   >
                     Delete
